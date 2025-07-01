@@ -8,9 +8,20 @@ import { Header } from './header';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Leaderboard } from './leaderboard';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 const XP_TO_LEVEL_UP = 100;
 const XP_GAIN = 50;
+const SOLANA_FEE = '0.0001 SOL';
+const ETH_GAS = '0.01 ETH';
 
 const initialImageUrl = 'https://placehold.co/600x400.png';
 const upgradedImageUrl = 'https://placehold.co/600x400/9f7aea/white.png';
@@ -25,6 +36,13 @@ type NftState = {
   def: number;
   agi: number;
   skillPoints: number;
+};
+
+type QuestSummary = {
+  xpGained: number;
+  fee: string;
+  leveledUp: boolean;
+  newLevel: number | null;
 };
 
 function formatTimestamp(): string {
@@ -56,6 +74,9 @@ export function OmniChainVoyager() {
   const [isNaming, setIsNaming] = useState(true);
   const [inputName, setInputName] = useState('');
   const [showShareButton, setShowShareButton] = useState(false);
+  const [justLeveledUp, setJustLeveledUp] = useState(false);
+  const [isQuestSummaryOpen, setIsQuestSummaryOpen] = useState(false);
+  const [questSummary, setQuestSummary] = useState<QuestSummary | null>(null);
 
   const addLog = (message: string) => {
     setLogs(prev => [...prev, { timestamp: formatTimestamp(), message }]);
@@ -75,7 +96,7 @@ export function OmniChainVoyager() {
     setIsBridging(true);
     addLog('Initiating bridge from Ethereum to Solana...');
     setTimeout(() => {
-        addLog('Estimated Gas: 0.01 ETH. Confirming transaction...');
+        addLog(`Estimated Gas: ${ETH_GAS}. Confirming transaction...`);
     }, 1000)
     setTimeout(() => {
       addLog('LayerZero: Verifying transaction...');
@@ -92,7 +113,7 @@ export function OmniChainVoyager() {
     setIsTraining(true);
     addLog('Quest Started: Defeating the Gravity Slime...');
     setTimeout(() => {
-      addLog('Fee: 0.0001 SOL. Engaging in combat...');
+      addLog(`Fee: ${SOLANA_FEE}. Engaging in combat...`);
     }, 1000);
     setTimeout(() => {
       let newXp = nft.xp + XP_GAIN;
@@ -107,14 +128,20 @@ export function OmniChainVoyager() {
         newImageUrl = upgradedImageUrl;
         leveledUp = true;
         skillPointsGained = 1;
+
+        setJustLeveledUp(true);
+        setTimeout(() => setJustLeveledUp(false), 1500); // Animation duration
       }
       
       addLog(`✅ Quest Complete! Gained ${XP_GAIN} XP.`);
       if (leveledUp) {
-        addLog(`Leveled up to Level ${newLevel}! Character appearance has been upgraded.`);
+        addLog(`🎉 Leveled up to Level ${newLevel}! Character appearance has been upgraded.`);
         addLog(`You have gained 1 Skill Point!`);
         setShowShareButton(true);
       }
+      
+      setQuestSummary({ xpGained: XP_GAIN, fee: SOLANA_FEE, leveledUp, newLevel: leveledUp ? newLevel : null });
+      setIsQuestSummaryOpen(true);
 
       setNft(prev => ({ 
         ...prev, 
@@ -131,14 +158,17 @@ export function OmniChainVoyager() {
     setIsReturning(true);
     addLog('Initiating return bridge from Solana to Ethereum...');
     setTimeout(() => {
-      addLog('Fee: 0.0001 SOL. Confirming transaction...');
+      addLog(`Fee: ${SOLANA_FEE}. Confirming transaction...`);
     }, 1000);
     setTimeout(() => {
       addLog('LayerZero: Verifying transaction...');
     }, 2500);
     setTimeout(() => {
       addLog('✅ Success! Character returned to Ethereum. <a href="https://layerzeroscan.com/tx/0xcae89321c759e6919e1a1219800115e2e8504938662928509059f1396a858599" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:text-primary/80">View on LayerZero Scan</a>');
-      setNft(prev => ({ ...prev, chain: 'Ethereum' }));
+      setNft(prev => {
+        addLog(`Voyager '${prev.name}' has returned as Level ${prev.level} with updated stats.`);
+        return { ...prev, chain: 'Ethereum' };
+      });
       setIsReturning(false);
       setShowShareButton(true);
     }, 4000);
@@ -192,7 +222,7 @@ export function OmniChainVoyager() {
       <Header />
       <main className="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
         <div className="grid md:grid-cols-2 gap-8 items-start">
-          <NftCard {...nft} />
+          <NftCard {...nft} justLeveledUp={justLeveledUp} />
           <div className="space-y-8">
             <ActionPanel
               currentChain={nft.chain}
@@ -212,6 +242,43 @@ export function OmniChainVoyager() {
           </div>
         </div>
       </main>
+
+      {questSummary && (
+        <AlertDialog open={isQuestSummaryOpen} onOpenChange={setIsQuestSummaryOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {questSummary.leveledUp ? `🎉 Level Up! Welcome to Level ${questSummary.newLevel}!` : "Quest Complete!"}
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                You defeated the Gravity Slime. Here's your summary.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <div className="space-y-2 text-sm my-4">
+              <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">XP Gained</span>
+                  <span className="font-bold text-accent">+{questSummary.xpGained} XP</span>
+              </div>
+              <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Transaction Fee</span>
+                  <span className="font-mono text-xs">{questSummary.fee}</span>
+              </div>
+              {questSummary.leveledUp && (
+                  <div className="flex justify-between items-center border-t border-primary/20 pt-2 mt-2">
+                      <span className="text-muted-foreground">New Reward</span>
+                      <span className="font-bold text-primary">+1 Skill Point</span>
+                  </div>
+              )}
+            </div>
+            <AlertDialogFooter>
+              <AlertDialogAction onClick={() => setIsQuestSummaryOpen(false)}>
+                Awesome!
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
+
     </div>
   );
 }

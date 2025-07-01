@@ -94,4 +94,19 @@
       opacity: 0.7;
     }
   }
+
+  .animate-level-up {
+    animation: level-up-glow 1.5s ease-in-out;
+  }
+
+  @keyframes level-up-glow {
+    0%, 100% {
+      text-shadow: 0 0 4px hsl(var(--accent)), 0 0 8px hsl(var(--accent));
+      transform: scale(1);
+    }
+    50% {
+      text-shadow: 0 0 12px hsl(var(--accent)), 0 0 20px hsl(var(--accent));
+      transform: scale(1.1);
+    }
+  }
 }

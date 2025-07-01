@@ -4,6 +4,7 @@ import { Progress } from '@/components/ui/progress';
 import { EthereumIcon } from './icons/ethereum';
 import { SolanaIcon } from './icons/solana';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 type NftCardProps = {
   name: string;
@@ -14,6 +15,7 @@ type NftCardProps = {
   str: number;
   def: number;
   agi: number;
+  justLeveledUp?: boolean;
 };
 
 const ChainDisplay = ({ chain }: { chain: 'Ethereum' | 'Solana' }) => (
@@ -23,7 +25,7 @@ const ChainDisplay = ({ chain }: { chain: 'Ethereum' | 'Solana' }) => (
   </div>
 );
 
-export function NftCard({ name, level, xp, chain, imageUrl, str, def, agi }: NftCardProps) {
+export function NftCard({ name, level, xp, chain, imageUrl, str, def, agi, justLeveledUp }: NftCardProps) {
   const xpToNextLevel = 100;
   return (
     <Card className="bg-gray-800/50 border-primary/20 text-white w-full overflow-hidden shadow-lg shadow-primary/10">
@@ -36,7 +38,7 @@ export function NftCard({ name, level, xp, chain, imageUrl, str, def, agi }: Nft
         <div className="flex justify-between items-start">
             <div>
                 <CardTitle className="text-3xl font-bold">{name}</CardTitle>
-                <CardDescription className="text-accent">Level {level}</CardDescription>
+                <CardDescription className={cn("text-accent", justLeveledUp && "animate-level-up")}>Level {level}</CardDescription>
             </div>
             <ChainDisplay chain={chain} />
         </div>
