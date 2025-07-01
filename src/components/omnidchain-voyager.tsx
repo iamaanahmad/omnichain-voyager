@@ -8,6 +8,7 @@ import { Header } from './header';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Leaderboard } from './leaderboard';
+import { generateQuest } from '@/ai/flows/quest-generator';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,6 +18,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Label } from './ui/label';
 
 const XP_TO_LEVEL_UP = 100;
 const XP_GAIN = 50;
@@ -77,9 +87,25 @@ export function OmniChainVoyager() {
   const [justLeveledUp, setJustLeveledUp] = useState(false);
   const [isQuestSummaryOpen, setIsQuestSummaryOpen] = useState(false);
   const [questSummary, setQuestSummary] = useState<QuestSummary | null>(null);
+  const [questDescription, setQuestDescription] = useState('Defeat the Gravity Slime on Solana.');
+  const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
+  const [giftAddress, setGiftAddress] = useState('');
 
   const addLog = (message: string) => {
     setLogs(prev => [...prev, { timestamp: formatTimestamp(), message }]);
+  };
+
+  const generateNewQuest = async (name: string, level: number) => {
+    addLog("Generating new quest...");
+    try {
+        const newQuest = await generateQuest({ name, level });
+        setQuestDescription(newQuest.quest);
+        addLog(`✨ New Quest: <span class="text-accent">${newQuest.quest}</span>`);
+    } catch (error) {
+        console.error('Failed to generate quest:', error);
+        addLog('Could not generate a new quest. Using default.');
+        setQuestDescription('Defeat the Gravity Slime on Solana.');
+    }
   };
 
   const handleNameSubmit = () => {
@@ -105,13 +131,14 @@ export function OmniChainVoyager() {
       addLog('✅ Success! Character arrived on Solana. <a href="https://layerzeroscan.com/tx/0x1f2727c1c51888a7861977791461d3311532a8934757c3d25819e91f36a83a04" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:text-primary/80">View on LayerZero Scan</a>');
       setNft(prev => ({ ...prev, chain: 'Solana' }));
       setIsBridging(false);
+      generateNewQuest(nft.name, nft.level);
     }, 4000);
   };
 
   const handleTrain = () => {
     setShowShareButton(false);
     setIsTraining(true);
-    addLog('Quest Started: Defeating the Gravity Slime...');
+    addLog(`Quest Started: ${questDescription}...`);
     setTimeout(() => {
       addLog(`Fee: ${SOLANA_FEE}. Engaging in combat...`);
     }, 1000);
@@ -151,6 +178,7 @@ export function OmniChainVoyager() {
         skillPoints: prev.skillPoints + skillPointsGained,
       }));
       setIsTraining(false);
+      generateNewQuest(nft.name, newLevel);
     }, 3000);
   };
 
@@ -190,6 +218,19 @@ export function OmniChainVoyager() {
     const text = `My Voyager '${nft.name}' is getting stronger on its journey between Ethereum and Solana! This omnichain asset, powered by @LayerZero_Labs and @solana, is the future of gaming. #L0Bounty #SolanaBreakout`;
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
+  };
+
+  const handleSendGift = () => {
+    if (!giftAddress.trim() || !giftAddress.startsWith('0x')) {
+      addLog("⚠️ Please enter a valid address to send a gift.");
+      return;
+    }
+    setIsGiftModalOpen(false);
+    addLog(`Initiating gift transfer of 20 XP to <span class="text-primary font-mono">${giftAddress}</span> via LayerZero...`);
+    setTimeout(() => {
+      addLog(`✅ Gift Sent! <a href="https://layerzeroscan.com/tx/0xfa9999c1c51888a7861977791461d3311532a8934757c3d25819e91f36a83a04" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:text-primary/80">View on LayerZero Scan</a>`);
+    }, 2500);
+    setGiftAddress('');
   };
 
   if (isNaming) {
@@ -235,6 +276,8 @@ export function OmniChainVoyager() {
               onSpendSkillPoint={handleSpendSkillPoint}
               showShareButton={showShareButton}
               onShare={handleShare}
+              questDescription={questDescription}
+              onOpenGiftModal={() => setIsGiftModalOpen(true)}
             />
             <LogConsole logs={logs} />
             <Leaderboard voyagerName={nft.name} voyagerLevel={nft.level} />
@@ -278,6 +321,33 @@ export function OmniChainVoyager() {
         </AlertDialog>
       )}
 
+      <Dialog open={isGiftModalOpen} onOpenChange={setIsGiftModalOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+            <DialogTitle>Send Gift</DialogTitle>
+            <DialogDescription>
+                Send a gift of 20 XP to another Voyager. This action will be broadcasted on LayerZero.
+            </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="address" className="text-right">
+                Address
+                </Label>
+                <Input
+                id="address"
+                placeholder="0x..."
+                value={giftAddress}
+                onChange={(e) => setGiftAddress(e.target.value)}
+                className="col-span-3"
+                />
+            </div>
+            </div>
+            <DialogFooter>
+            <Button type="submit" onClick={handleSendGift}>Send Gift</Button>
+            </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

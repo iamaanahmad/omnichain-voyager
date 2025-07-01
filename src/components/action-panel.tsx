@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { ArrowRightLeft, Sword, Loader2, Share2 } from 'lucide-react';
+import { ArrowRightLeft, Sword, Loader2, Share2, Gift } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type ActionPanelProps = {
@@ -16,6 +16,8 @@ type ActionPanelProps = {
   onSpendSkillPoint: (stat: 'str' | 'def' | 'agi') => void;
   showShareButton: boolean;
   onShare: () => void;
+  questDescription: string;
+  onOpenGiftModal: () => void;
 };
 
 export function ActionPanel({
@@ -30,6 +32,8 @@ export function ActionPanel({
   onSpendSkillPoint,
   showShareButton,
   onShare,
+  questDescription,
+  onOpenGiftModal,
 }: ActionPanelProps) {
   const isEthereum = currentChain === 'Ethereum';
   const isLoading = isBridging || isTraining || isReturning;
@@ -73,7 +77,7 @@ export function ActionPanel({
         <div className="flex flex-col gap-4">
             <div className="text-center">
                 <p className="text-lg font-semibold text-accent">Current Quest</p>
-                <p className="text-gray-400">Defeat the Gravity Slime on Solana.</p>
+                <p className="text-gray-400">{questDescription}</p>
             </div>
             <Button
                 onClick={onTrain}
@@ -115,6 +119,16 @@ export function ActionPanel({
             </Button>
         </div>
       )}
+      <div className="flex flex-col gap-2 pt-4 mt-auto border-t border-primary/20">
+        <Button
+          onClick={onOpenGiftModal}
+          variant="outline"
+          disabled={isLoading}
+          className="w-full transition-all duration-300 border-accent/50 text-accent hover:bg-accent/10 hover:text-accent"
+        >
+          <Gift className="mr-2 h-4 w-4" />
+          Send Gift
+        </Button>
        {showShareButton && (
         <Button
           onClick={onShare}
@@ -125,6 +139,7 @@ export function ActionPanel({
           Share on X (Twitter)
         </Button>
       )}
+      </div>
     </div>
   );
 }
