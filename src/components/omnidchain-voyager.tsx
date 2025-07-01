@@ -206,7 +206,6 @@ export function OmniChainVoyager() {
               onChange={(e) => setInputName(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
               className="text-lg h-12"
-              autoFocus
             />
             <Button onClick={handleNameSubmit} disabled={!inputName.trim()} className="text-lg h-12">
               Begin
