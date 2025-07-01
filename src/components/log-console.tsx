@@ -20,7 +20,7 @@ export function LogConsole({ logs }: LogConsoleProps) {
   }, [logs]);
 
   return (
-    <Card className="bg-black/50 border-primary/20 text-white flex flex-col h-full min-h-[300px] md:max-h-[440px] shadow-lg shadow-primary/10">
+    <Card className="bg-black/50 border-primary/20 text-white flex flex-col h-full min-h-[300px] shadow-lg shadow-primary/10">
       <CardHeader>
         <CardTitle className="text-lg text-primary">Log Console</CardTitle>
       </CardHeader>

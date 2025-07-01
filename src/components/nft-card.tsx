@@ -42,7 +42,7 @@ export function NftCard({ name, level, xp, chain, imageUrl }: NftCardProps) {
             <span>Experience</span>
             <span>{xp} / {xpToNextLevel} XP</span>
           </div>
-          <Progress value={(xp / xpToNextLevel) * 100} className="h-2 bg-gray-700 [&>div]:bg-accent" />
+          <Progress value={(xp / xpToNextLevel) * 100} className="h-4 bg-muted [&>div]:bg-accent" />
         </div>
       </CardContent>
     </Card>

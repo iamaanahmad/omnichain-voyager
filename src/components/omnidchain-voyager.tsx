@@ -92,20 +92,22 @@ export function OmniChainVoyager() {
   return (
     <div className="bg-background min-h-screen text-white">
       <Header />
-      <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
+      <main className="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <NftCard {...nft} />
-          <LogConsole logs={logs} />
+          <div className="space-y-8">
+            <ActionPanel
+              currentChain={nft.chain}
+              isBridging={isBridging}
+              isTraining={isTraining}
+              isReturning={isReturning}
+              onBridge={handleBridge}
+              onTrain={handleTrain}
+              onReturn={handleReturn}
+            />
+            <LogConsole logs={logs} />
+          </div>
         </div>
-        <ActionPanel
-          currentChain={nft.chain}
-          isBridging={isBridging}
-          isTraining={isTraining}
-          isReturning={isReturning}
-          onBridge={handleBridge}
-          onTrain={handleTrain}
-          onReturn={handleReturn}
-        />
       </main>
     </div>
   );
