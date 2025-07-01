@@ -36,7 +36,7 @@ export default function LandingPage() {
       roughness: 0.2,
     });
 
-    // Crystal Mesh
+    // Crystal Mesh (Solid Core)
     const crystal = new THREE.Mesh(geometry, material);
     scene.add(crystal);
 
