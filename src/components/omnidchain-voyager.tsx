@@ -72,10 +72,13 @@ export function OmniChainVoyager() {
     setIsBridging(true);
     addLog('Initiating bridge from Ethereum to Solana...');
     setTimeout(() => {
-      addLog('LayerZero: Verifying transaction...');
-    }, 2000);
+        addLog('Estimated Gas: 0.01 ETH. Confirming transaction...');
+    }, 1000)
     setTimeout(() => {
-      addLog('Success! Character arrived on Solana.');
+      addLog('LayerZero: Verifying transaction...');
+    }, 2500);
+    setTimeout(() => {
+      addLog('✅ Success! Character arrived on Solana. <a href="https://layerzeroscan.com/tx/0x1f2727c1c51888a7861977791461d3311532a8934757c3d25819e91f36a83a04" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:text-primary/80">View on LayerZero Scan</a>');
       setNft(prev => ({ ...prev, chain: 'Solana' }));
       setIsBridging(false);
     }, 4000);
@@ -84,6 +87,9 @@ export function OmniChainVoyager() {
   const handleTrain = () => {
     setIsTraining(true);
     addLog('Quest Started: Defeating the Gravity Slime...');
+    setTimeout(() => {
+      addLog('Fee: 0.0001 SOL. Engaging in combat...');
+    }, 1000);
     setTimeout(() => {
       let newXp = nft.xp + XP_GAIN;
       let newLevel = nft.level;
@@ -120,10 +126,13 @@ export function OmniChainVoyager() {
     setIsReturning(true);
     addLog('Initiating return bridge from Solana to Ethereum...');
     setTimeout(() => {
-      addLog('LayerZero: Verifying transaction...');
-    }, 2000);
+      addLog('Fee: 0.0001 SOL. Confirming transaction...');
+    }, 1000);
     setTimeout(() => {
-      addLog('Success! Character returned to Ethereum with updated stats.');
+      addLog('LayerZero: Verifying transaction...');
+    }, 2500);
+    setTimeout(() => {
+      addLog('✅ Success! Character returned to Ethereum. <a href="https://layerzeroscan.com/tx/0xcae89321c759e6919e1a1219800115e2e8504938662928509059f1396a858599" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:text-primary/80">View on LayerZero Scan</a>');
       setNft(prev => ({ ...prev, chain: 'Ethereum' }));
       setIsReturning(false);
     }, 4000);

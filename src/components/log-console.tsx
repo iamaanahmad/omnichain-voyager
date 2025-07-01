@@ -29,7 +29,10 @@ export function LogConsole({ logs }: LogConsoleProps) {
             {logs.map((log, index) => (
               <div key={index} className="flex gap-4 animate-in fade-in duration-500">
                 <span className="text-gray-500 flex-shrink-0">{log.timestamp}</span>
-                <p className="text-gray-300 break-words">{log.message}</p>
+                <p 
+                  className="text-gray-300 break-words"
+                  dangerouslySetInnerHTML={{ __html: log.message }}
+                />
               </div>
             ))}
             {logs.length === 0 && (
