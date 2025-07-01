@@ -120,10 +120,8 @@ export default function LandingPage() {
                 <p className="max-w-2xl text-lg md:text-xl text-gray-300 mb-8">
                 The future of gaming is interoperable. Forge your hero, traverse blockchains, and engage in a truly cross-chain economy.
                 </p>
-                <Link href="/voyager" legacyBehavior>
-                <a className="bg-[#8A2BE2] text-white font-bold py-3 px-8 rounded-lg text-lg transform transition-all duration-300 hover:translate-y-[-2px] hover:shadow-2xl hover:shadow-purple-500/50">
+                <Link href="/voyager" className="bg-[#8A2BE2] text-white font-bold py-3 px-8 rounded-lg text-lg transform transition-all duration-300 hover:translate-y-[-2px] hover:shadow-2xl hover:shadow-purple-500/50">
                     Begin Your Journey
-                </a>
                 </Link>
             </div>
         </div>
