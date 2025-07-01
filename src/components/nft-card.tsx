@@ -25,7 +25,7 @@ export function NftCard({ name, level, xp, chain, imageUrl }: NftCardProps) {
     <Card className="bg-gray-800/50 border-primary/20 text-white w-full overflow-hidden shadow-lg shadow-primary/10">
       <CardHeader className="p-0">
         <div className="relative h-64 w-full">
-          <Image src={imageUrl} alt={name} layout="fill" objectFit="cover" className="bg-gray-900" data-ai-hint="futuristic character" />
+          <Image src={imageUrl} alt={name} layout="fill" objectFit="cover" className="bg-gray-900" data-ai-hint={level > 1 ? "upgraded character" : "futuristic character"} />
         </div>
       </CardHeader>
       <CardContent className="p-6 space-y-4">

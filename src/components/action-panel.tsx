@@ -38,11 +38,16 @@ export function ActionPanel({
           )}
         >
           {isBridging ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Processing...
+            </>
           ) : (
-            <ArrowRightLeft className="mr-2 h-4 w-4" />
+            <>
+              <ArrowRightLeft className="mr-2 h-4 w-4" />
+              Bridge to Solana
+            </>
           )}
-          Bridge to Solana
         </Button>
       ) : (
         <>
@@ -56,11 +61,16 @@ export function ActionPanel({
             )}
           >
             {isTraining ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+              </>
             ) : (
-              <Sword className="mr-2 h-4 w-4" />
+              <>
+                <Sword className="mr-2 h-4 w-4" />
+                Train on Solana
+              </>
             )}
-            Train on Solana
           </Button>
           <Button
             onClick={onReturn}
@@ -68,11 +78,16 @@ export function ActionPanel({
             className="w-full transition-all duration-300"
           >
             {isReturning ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+              </>
             ) : (
-              <ArrowRightLeft className="mr-2 h-4 w-4" />
+              <>
+                <ArrowRightLeft className="mr-2 h-4 w-4" />
+                Return to Ethereum
+              </>
             )}
-            Return to Ethereum
           </Button>
         </>
       )}

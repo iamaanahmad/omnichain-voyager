@@ -9,6 +9,9 @@ import { Header } from './header';
 const XP_TO_LEVEL_UP = 100;
 const XP_GAIN = 50;
 
+const initialImageUrl = 'https://placehold.co/600x400.png';
+const upgradedImageUrl = 'https://placehold.co/600x400/9f7aea/white.png';
+
 type NftState = {
   name: string;
   level: number;
@@ -32,7 +35,7 @@ export function OmniChainVoyager() {
     level: 1,
     xp: 0,
     chain: 'Ethereum',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: initialImageUrl,
   });
 
   const [logs, setLogs] = useState<LogEntry[]>([]);
@@ -63,15 +66,22 @@ export function OmniChainVoyager() {
     setTimeout(() => {
       let newXp = nft.xp + XP_GAIN;
       let newLevel = nft.level;
-      let logMessage = `Training complete. Gained ${XP_GAIN} XP.`;
+      let newImageUrl = nft.imageUrl;
+      let leveledUp = false;
 
       if (newXp >= XP_TO_LEVEL_UP) {
         newLevel += 1;
         newXp -= XP_TO_LEVEL_UP;
-        logMessage += ` Leveled up to Level ${newLevel}!`;
+        newImageUrl = upgradedImageUrl;
+        leveledUp = true;
       }
-      addLog(logMessage);
-      setNft(prev => ({ ...prev, xp: newXp, level: newLevel }));
+      
+      addLog(`Training complete. Gained ${XP_GAIN} XP.`);
+      if (leveledUp) {
+        addLog(`Leveled up to Level ${newLevel}! Character appearance has been upgraded.`);
+      }
+
+      setNft(prev => ({ ...prev, xp: newXp, level: newLevel, imageUrl: newImageUrl }));
       setIsTraining(false);
     }, 3000);
   };
