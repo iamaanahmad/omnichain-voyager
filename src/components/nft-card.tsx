@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Progress } from '@/components/ui/progress';
 import { EthereumIcon } from './icons/ethereum';
 import { SolanaIcon } from './icons/solana';
+import { Separator } from '@/components/ui/separator';
 
 type NftCardProps = {
   name: string;
@@ -10,6 +11,9 @@ type NftCardProps = {
   xp: number;
   chain: 'Ethereum' | 'Solana';
   imageUrl: string;
+  str: number;
+  def: number;
+  agi: number;
 };
 
 const ChainDisplay = ({ chain }: { chain: 'Ethereum' | 'Solana' }) => (
@@ -19,7 +23,7 @@ const ChainDisplay = ({ chain }: { chain: 'Ethereum' | 'Solana' }) => (
   </div>
 );
 
-export function NftCard({ name, level, xp, chain, imageUrl }: NftCardProps) {
+export function NftCard({ name, level, xp, chain, imageUrl, str, def, agi }: NftCardProps) {
   const xpToNextLevel = 100;
   return (
     <Card className="bg-gray-800/50 border-primary/20 text-white w-full overflow-hidden shadow-lg shadow-primary/10">
@@ -43,6 +47,23 @@ export function NftCard({ name, level, xp, chain, imageUrl }: NftCardProps) {
             <span>{xp} / {xpToNextLevel} XP</span>
           </div>
           <Progress value={(xp / xpToNextLevel) * 100} className="h-4 bg-muted [&>div]:bg-accent" />
+        </div>
+
+        <Separator className="my-4 bg-primary/20" />
+
+        <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+                <p className="text-sm text-gray-400 font-bold tracking-widest">STR</p>
+                <p className="text-2xl font-bold text-primary">{str}</p>
+            </div>
+            <div>
+                <p className="text-sm text-gray-400 font-bold tracking-widest">DEF</p>
+                <p className="text-2xl font-bold text-primary">{def}</p>
+            </div>
+            <div>
+                <p className="text-sm text-gray-400 font-bold tracking-widest">AGI</p>
+                <p className="text-2xl font-bold text-primary">{agi}</p>
+            </div>
         </div>
       </CardContent>
     </Card>
