@@ -7,6 +7,7 @@ import { LogConsole, LogEntry } from './log-console';
 import { Header } from './header';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
+import { Leaderboard } from './leaderboard';
 
 const XP_TO_LEVEL_UP = 100;
 const XP_GAIN = 50;
@@ -54,6 +55,7 @@ export function OmniChainVoyager() {
   const [isReturning, setIsReturning] = useState(false);
   const [isNaming, setIsNaming] = useState(true);
   const [inputName, setInputName] = useState('');
+  const [showShareButton, setShowShareButton] = useState(false);
 
   const addLog = (message: string) => {
     setLogs(prev => [...prev, { timestamp: formatTimestamp(), message }]);
@@ -69,6 +71,7 @@ export function OmniChainVoyager() {
   };
 
   const handleBridge = () => {
+    setShowShareButton(false);
     setIsBridging(true);
     addLog('Initiating bridge from Ethereum to Solana...');
     setTimeout(() => {
@@ -85,6 +88,7 @@ export function OmniChainVoyager() {
   };
 
   const handleTrain = () => {
+    setShowShareButton(false);
     setIsTraining(true);
     addLog('Quest Started: Defeating the Gravity Slime...');
     setTimeout(() => {
@@ -109,6 +113,7 @@ export function OmniChainVoyager() {
       if (leveledUp) {
         addLog(`Leveled up to Level ${newLevel}! Character appearance has been upgraded.`);
         addLog(`You have gained 1 Skill Point!`);
+        setShowShareButton(true);
       }
 
       setNft(prev => ({ 
@@ -135,6 +140,7 @@ export function OmniChainVoyager() {
       addLog('✅ Success! Character returned to Ethereum. <a href="https://layerzeroscan.com/tx/0xcae89321c759e6919e1a1219800115e2e8504938662928509059f1396a858599" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:text-primary/80">View on LayerZero Scan</a>');
       setNft(prev => ({ ...prev, chain: 'Ethereum' }));
       setIsReturning(false);
+      setShowShareButton(true);
     }, 4000);
   };
   
@@ -148,6 +154,12 @@ export function OmniChainVoyager() {
         skillPoints: prev.skillPoints - 1,
       }));
     }
+  };
+
+  const handleShare = () => {
+    const text = `My Voyager '${nft.name}' is getting stronger on its journey between Ethereum and Solana! This omnichain asset, powered by @LayerZero_Labs and @solana, is the future of gaming. #L0Bounty #SolanaBreakout`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
   };
 
   if (isNaming) {
@@ -192,8 +204,11 @@ export function OmniChainVoyager() {
               onTrain={handleTrain}
               onReturn={handleReturn}
               onSpendSkillPoint={handleSpendSkillPoint}
+              showShareButton={showShareButton}
+              onShare={handleShare}
             />
             <LogConsole logs={logs} />
+            <Leaderboard voyagerName={nft.name} voyagerLevel={nft.level} />
           </div>
         </div>
       </main>

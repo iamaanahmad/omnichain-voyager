@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { ArrowRightLeft, Sword, Loader2 } from 'lucide-react';
+import { ArrowRightLeft, Sword, Loader2, Share2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type ActionPanelProps = {
@@ -14,6 +14,8 @@ type ActionPanelProps = {
   onTrain: () => void;
   onReturn: () => void;
   onSpendSkillPoint: (stat: 'str' | 'def' | 'agi') => void;
+  showShareButton: boolean;
+  onShare: () => void;
 };
 
 export function ActionPanel({
@@ -26,6 +28,8 @@ export function ActionPanel({
   onTrain,
   onReturn,
   onSpendSkillPoint,
+  showShareButton,
+  onShare,
 }: ActionPanelProps) {
   const isEthereum = currentChain === 'Ethereum';
   const isLoading = isBridging || isTraining || isReturning;
@@ -110,6 +114,16 @@ export function ActionPanel({
                 )}
             </Button>
         </div>
+      )}
+       {showShareButton && (
+        <Button
+          onClick={onShare}
+          variant="outline"
+          className="w-full transition-all duration-300 border-accent/50 text-accent hover:bg-accent/10 hover:text-accent animate-in fade-in"
+        >
+          <Share2 className="mr-2 h-4 w-4" />
+          Share on X (Twitter)
+        </Button>
       )}
     </div>
   );
