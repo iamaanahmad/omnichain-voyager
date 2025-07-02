@@ -7,7 +7,7 @@ Forge your hero, traverse blockchains, and engage in a truly interoperable, cros
 ---
 
 ## 🔗 Live Demo  
-🌐 [https://your-vercel-deployment-url.app/](https://your-vercel-deployment-url.app/)
+🌐 [https://omnichain-voyager.vercel.app/](https://omnichain-voyager.vercel.app/)
 
 ## 🎥 Demo Video  
 📹 [Watch the 90-Second Demo](Link-to-Your-90-Second-Demo-Video)
@@ -87,7 +87,7 @@ OmniChain Voyager simulates the logic of a real **LayerZero OApp**:
 ## 🧪 Run Locally
 
 ```bash
-git clone [Your GitHub Repo URL]
+git clone https://github.com/iamaanahmad/omnichain-voyager.git
 cd omnichain-voyager
 npm install
 npm run dev
