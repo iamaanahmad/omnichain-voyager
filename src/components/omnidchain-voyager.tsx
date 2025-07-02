@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -194,7 +195,6 @@ export function OmniChainVoyager() {
     setTimeout(() => {
       addLog('✅ Success! Character returned to Ethereum. <a href="https://layerzeroscan.com/tx/0xcae89321c759e6919e1a1219800115e2e8504938662928509059f1396a858599" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:text-primary/80">View on LayerZero Scan</a>');
       setNft(prev => {
-        addLog(`Voyager '${prev.name}' has returned as Level ${prev.level} with updated stats.`);
         return { ...prev, chain: 'Ethereum' };
       });
       setIsReturning(false);
