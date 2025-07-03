@@ -10,7 +10,11 @@ Forge your hero, traverse blockchains, and engage in a truly interoperable, cros
 🌐 [https://omnichain-voyager.vercel.app/](https://omnichain-voyager.vercel.app/)
 
 ## 🎥 Demo Video  
-📹 [Watch the 90-Second Demo](Link-to-Your-90-Second-Demo-Video)
+📹 [Watch on YouTube](https://youtu.be/5UGyrs2ix3w)  
+🟣 [Also on CodeCup](https://codecup.cc/videos/YVZSpF54ksKPV0ny2pin) – a Web3 video platform where dev work becomes an on-chain asset.
+
+💡 CodeCup is one of our projects:  
+Upload technical demos, earn NFTs for your builds, and grow your Web3 dev identity on Solana.
 
 ## 🧾 Submission  
 This project is a submission for the **LayerZero Solana Bounty** at the **Superteam Fun Hackathon**.
