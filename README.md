@@ -6,6 +6,8 @@ Forge your hero, traverse blockchains, and engage in a truly interoperable, cros
 
 ---
 
+![OmniChain Voyager](src/app/preview.png)
+
 ## 🔗 Live Demo  
 🌐 [https://omnichain-voyager.vercel.app/](https://omnichain-voyager.vercel.app/)
 
